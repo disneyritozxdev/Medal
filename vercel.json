@@ -1,3 +1,14 @@
 {
-  "cleanUrls": true
+  "version": 2,
+  "builds": [
+    { "src": "api/clip.js", "use": "@vercel/node" },
+    { "src": "*.html", "use": "@vercel/static" },
+    { "src": "*.css", "use": "@vercel/static" },
+    { "src": "script.js", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/clip", "dest": "/api/clip.js" },
+    { "handle": "filesystem" },
+    { "src": "/", "dest": "/index.html" }
+  ]
 }
