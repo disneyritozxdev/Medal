@@ -1,0 +1,392 @@
+/* vantablack theme - near-black surfaces */
+:root {
+  --bg: #000000;
+  --bg-subtle: #020202;
+  --surface: #050505;
+  --surface-hover: #080808;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-focus: rgba(255, 255, 255, 0.15);
+  --text: rgba(255, 255, 255, 0.94);
+  --text-muted: rgba(255, 255, 255, 0.4);
+  --accent: rgba(255, 255, 255, 0.08);
+  --accent-hover: rgba(255, 255, 255, 0.12);
+  --glow: rgba(255, 255, 255, 0.03);
+  --ok: #22c55e;
+  --ok-dim: rgba(34, 197, 94, 0.15);
+  --error: #ef4444;
+  --error-dim: rgba(239, 68, 68, 0.12);
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Outfit", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.screen {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.header {
+  animation: fadeInDown 0.6s var(--ease);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--text-muted);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.tagline {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.input-section {
+  animation: fadeInUp 0.6s var(--ease) 0.08s both;
+}
+
+.textarea-wrap {
+  position: relative;
+}
+
+.textarea-wrap .textarea-icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+#links {
+  width: 100%;
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 120px;
+  transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+#links::placeholder {
+  color: var(--text-muted);
+}
+
+#links:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 1px var(--border-focus), 0 4px 24px var(--glow);
+}
+
+.actions {
+  margin-top: 0.9rem;
+}
+
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.3rem;
+  background: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), background 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+button svg, button i {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+button:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--glow);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.list-section {
+  animation: fadeInUp 0.5s var(--ease) both;
+}
+
+.list-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.select-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.select-all:hover {
+  color: var(--text);
+}
+
+.select-all .checkbox-wrap {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-all input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.select-all input:checked + .checkbox-wrap,
+.select-all input:indeterminate + .checkbox-wrap {
+  border-color: var(--border-focus);
+  background: var(--accent-hover);
+}
+
+.select-all input:checked + .checkbox-wrap .check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.select-all input:indeterminate + .checkbox-wrap .check {
+  opacity: 0;
+}
+
+.select-all input:indeterminate + .checkbox-wrap::after {
+  content: "";
+  width: 10px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 1px;
+}
+
+#download-selected {
+  margin-left: auto;
+}
+
+.clip-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.clip-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.8rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+  animation: clipItemIn 0.4s var(--ease-out) both;
+}
+
+.clip-item:hover {
+  background: var(--surface-hover);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.clip-item .checkbox-wrap {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clip-item input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.clip-item input:checked + .checkbox-wrap {
+  border-color: var(--border-focus);
+  background: var(--accent-hover);
+}
+
+.clip-item input:checked + .checkbox-wrap .check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.clip-item input:disabled + .checkbox-wrap {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.clip-item .label {
+  flex: 1;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.82rem;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.clip-item .label.failed {
+  color: var(--text-muted);
+}
+
+.clip-item .open-link {
+  color: var(--text-muted);
+  padding: 0.2rem;
+  transition: color 0.2s var(--ease);
+}
+
+.clip-item .open-link:hover {
+  color: var(--text);
+}
+
+.clip-item .open-link svg {
+  display: block;
+}
+
+.clip-item .state-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.clip-item .state-flag svg {
+  width: 14px;
+  height: 14px;
+}
+
+.clip-item .state-flag.loading {
+  color: var(--text-muted);
+}
+
+.clip-item .state-flag.loading svg {
+  animation: spin 0.8s linear infinite;
+}
+
+.clip-item .state-flag.ok {
+  color: var(--ok);
+  background: var(--ok-dim);
+}
+
+.clip-item .state-flag.error,
+.clip-item .state-flag.failed {
+  color: var(--error);
+  background: var(--error-dim);
+}
+
+.check {
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease-out);
+}
+
+.status {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  min-height: 1.3em;
+  animation: fadeIn 0.35s var(--ease);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes clipItemIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

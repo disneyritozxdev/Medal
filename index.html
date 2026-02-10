@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medal Bypass</title>
+    <meta name="theme-color" content="#000000" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="screen">
+      <header class="header">
+        <div class="logo">
+          <i data-lucide="film" class="logo-icon"></i>
+          <h1>Medal Bypass</h1>
+        </div>
+        <p class="tagline">paste medal links or ids, one per line — without watermark+</p>
+      </header>
+
+      <section class="input-section">
+        <div class="textarea-wrap">
+          <textarea
+            id="links"
+            rows="5"
+            placeholder="https://medal.tv/clips/xxxxx&#10;https://medal.tv/clips/yyyyy&#10;or just clip ids..."
+            aria-label="medal clip urls or ids, one per line"
+          ></textarea>
+          <i data-lucide="link" class="textarea-icon"></i>
+        </div>
+        <div class="actions">
+          <button type="button" id="load" aria-label="load clips">
+            <i data-lucide="download"></i>
+            <span>load clips</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="list-section" id="list-section" hidden>
+        <div class="list-toolbar">
+          <label class="select-all">
+            <input type="checkbox" id="select-all" aria-label="select all" />
+            <span class="checkbox-wrap">
+              <svg class="check" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <polyline points="2,6 5,9 10,3" />
+              </svg>
+            </span>
+            <span>select all</span>
+          </label>
+          <button type="button" id="download-selected" aria-label="download selected">
+            <i data-lucide="folder-down"></i>
+            <span>download selected (zip)</span>
+          </button>
+        </div>
+        <ul id="clip-list" class="clip-list"></ul>
+      </section>
+
+      <div id="status" class="status" aria-live="polite"></div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
