@@ -4,7 +4,7 @@ download medal clips without watermarks.
 
 ## live demo
 
-https://medal-sigma.vercel.app/
+[Demo](https://medal-sigma.vercel.app/)
 
 ## run locally
 
