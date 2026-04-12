@@ -85,12 +85,13 @@
     if (selected.length === 0) return;
     if (selected.length === 1) {
       setStatus("downloading...");
-      const res = await fetch(selected[0].src);
+      const clip = selected[0];
+      const res = await fetch(API_BASE + "/api/clip?url=" + encodeURIComponent(clip.url) + "&download=true");
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = randomName() + ".mp4";
+      a.download = (clip.id || randomName()) + ".mp4";
       a.click();
       URL.revokeObjectURL(url);
       setStatus("downloaded 1 clip.");
@@ -98,15 +99,15 @@
       setStatus("preparing zip...");
       const zip = new JSZip();
       for (const c of selected) {
-        const res = await fetch(c.src);
+        const res = await fetch(API_BASE + "/api/clip?url=" + encodeURIComponent(c.url) + "&download=true");
         const blob = await res.blob();
-        zip.file(randomName() + ".mp4", blob);
+        zip.file((c.id || randomName()) + ".mp4", blob);
       }
       const zipBlob = await zip.generateAsync({ type: "blob" });
       const url = URL.createObjectURL(zipBlob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = randomName() + ".zip";
+      a.download = "clips_" + Date.now() + ".zip";
       a.click();
       URL.revokeObjectURL(url);
       setStatus("downloaded " + selected.length + " clips as zip.");

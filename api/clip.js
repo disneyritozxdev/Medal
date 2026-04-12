@@ -48,35 +48,54 @@ async function getVideoURL(input) {
   return null;
 }
 
-async function runHandler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  async function runHandler(req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  if (req.method === "OPTIONS") {
-    return res.status(204).end();
-  }
-
-  if (req.method !== "GET") {
-    return res.status(405).json({ valid: false, reasoning: "method not allowed" });
-  }
-
-  const raw = req.query.url || req.query.id || "";
-  const url = configureURL(raw);
-
-  if (!url || !checkURL(url)) {
-    return res.status(400).json({ valid: false, reasoning: "invalid url or id" });
-  }
-
-  try {
-    const src = await getVideoURL(url);
-    if (src) {
-      return res.status(200).json({ valid: true, src });
+    if (req.method === "OPTIONS") {
+      return res.status(204).end();
     }
-    return res.status(404).json({ valid: false, reasoning: "no clip found" });
-  } catch (err) {
-    return res.status(500).json({ valid: false, reasoning: "error fetching clip" });
+
+    if (req.method !== "GET") {
+      return res.status(405).json({ valid: false, reasoning: "method not allowed" });
+    }
+
+    const raw = req.query.url || req.query.id || "";
+    const url = configureURL(raw);
+
+    if (!url || !checkURL(url)) {
+      return res.status(400).json({ valid: false, reasoning: "invalid url or id" });
+    }
+
+    if (req.query.download === "true") {
+      try {
+        const src = await getVideoURL(url);
+        if (!src) return res.status(404).json({ valid: false, reasoning: "no clip found" });
+        
+        const videoRes = await fetch(src);
+        if (!videoRes.ok) throw new Error("failed to fetch video");
+
+        const contentType = videoRes.headers.get("content-type") || "video/mp4";
+        res.setHeader("Content-Type", contentType);
+        res.setHeader("Content-Disposition", `attachment; filename="clip_${extractClipID(url) || "video"}.mp4"`);
+
+        const arrayBuffer = await videoRes.arrayBuffer();
+        return res.send(Buffer.from(arrayBuffer));
+      } catch (err) {
+        return res.status(500).json({ valid: false, reasoning: "error proxying download" });
+      }
+    }
+
+    try {
+      const src = await getVideoURL(url);
+      if (src) {
+        return res.status(200).json({ valid: true, src });
+      }
+      return res.status(404).json({ valid: false, reasoning: "no clip found" });
+    } catch (err) {
+      return res.status(500).json({ valid: false, reasoning: "error fetching clip" });
+    }
   }
-}
 
 module.exports = runHandler;
